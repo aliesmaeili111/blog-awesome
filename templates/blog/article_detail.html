@@ -1,0 +1,67 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% load base_tags %}
+{% load humanize %}
+{% load comment_tags %}  {# Loading the template tag #}
+{% load ratings %}
+{% block title %}
+            |{{object.title}}
+{% endblock %}
+
+
+{% block main %} 
+<header class="masthead" style="background-image: url('{{object.thumbnail.url}}')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                
+                <div class="site-heading">
+                    <h2>{{object.title}}</h2>
+                    {% if article.is_special %}
+                        <span class="badge bg-danger text-white" style="font-size: 14px;">ویژه</span>
+                    {% endif %}
+                    <span class="subheading">{{object.publish|naturaltime}}</span><br>
+                    {% ratings object %} 
+                    <div><h4>بازدید ها :{{object.hits.count}}</h4></div>
+                </div>
+            </div>
+         
+        </div>
+        
+    </div>
+    
+</header>
+
+ <!-- Post Content-->
+ <article class="mb-4">
+  
+    <div class="container px-4 px-lg-5 ">
+      
+    
+        <div class="row gx-4 gx-lg-5 justify-content-center text-justify">
+           
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                
+                {% if object.is_special %}
+                    {% if user.authenticated and user.is_special_user or user == object.auhtor or user.is_superuser %}
+                        {{object.description|safe}}
+                    {% else %}
+                    <p>{{article.description|striptags|truncatewords:25}} </p>
+                    <p class="alert alert-secondary text-center">این مقاله ویژه است برای مشاهده آن باید <a href="{% url 'login' %}" class="btn-sm alert-link text-primary">  وارد شوید</a></p>
+
+                    {% endif %}
+                {% else %}
+                    {{object.description|safe}}
+                {% endif %}
+                
+                
+                <br><br><br>
+                {% render_comments object request %}  {# Render all the comments belong to the passed object "obj" #}
+            
+                {% include_bootstrap %} 
+                
+            </div>
+        </div>
+    </div>
+</article>
+{% endblock %}

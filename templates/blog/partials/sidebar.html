@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>popular_articles</title>
+    <style>
+        .popular_articles{
+            border:2px solid #bfbfbf;
+            padding: 15px;
+            border-radius: 5px;
+            position: relative;
+            box-shadow: 7px 8px 4px #d5d5d5;
+            margin-bottom: 20px;
+            background-color: rgba(232, 232, 232, 0.829);
+        }
+        .text{
+            text-align:center ;
+        }
+        aside{
+            width:240px ;
+            position: absolute;
+            left:50px ;
+            top: 581px;
+        }
+        @media (max-width: 1225px) { 
+            .popular_articles{
+                position: static;
+                width: 100%;
+                justify-content: center;
+            }
+            aside{
+                position: static;
+                display: grid;
+                grid-template-columns: repeat(2,1fr);
+                gap: 35px;
+                width: 450px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="popular_articles">
+        <h5 class="text">{{title}}</h5>
+        <hr>
+        {% for a in articles %}
+            <a href="{% url 'blog:detail' a.slug %}">{{a.title}}</a><br>
+        {% endfor %}
+        <hr>
+    </div>
+</body>
+</html>
+
+
